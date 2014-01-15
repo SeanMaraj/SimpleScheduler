@@ -23,7 +23,19 @@ public class MainActivity extends Activity {
 	
 	public void onClick(View v)
 	{
-		Intent intent = new Intent(this, ToDo.class);
+		Intent intent = null;
+		
+		if (v.getId() == R.id.btnSchedule)
+		{
+			intent = new Intent(this, Schedules.class);
+		}
+		
+		if (v.getId() == R.id.button1)
+		{
+			intent = new Intent(this, ToDo.class);
+		}
+		
+		
 		startActivity(intent);
 	}
 

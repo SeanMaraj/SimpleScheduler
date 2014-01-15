@@ -30,6 +30,11 @@
             android:name="com.stmaraj.simpleshedule.EditToDoList"
             android:label="@string/title_activity_edit_to_do_list" >
         </activity>
+        <activity
+            android:name="com.stmaraj.simpleshedule.Schedules"
+            android:label="@string/title_activity_schedules"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        </activity>
     </application>
 
 </manifest>

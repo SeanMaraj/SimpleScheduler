@@ -6,5 +6,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_to_do">ToDo</string>
     <string name="title_activity_edit_to_do_list">EditToDoList</string>
+    <string name="title_activity_schedules">Schedules</string>
 
 </resources>
