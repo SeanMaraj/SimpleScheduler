@@ -35,6 +35,11 @@ public class MainActivity extends Activity {
 			intent = new Intent(this, ToDo.class);
 		}
 		
+		if (v.getId() == R.id.btnTest)
+		{
+			intent = new Intent(this, Test.class);
+		}
+		
 		
 		startActivity(intent);
 	}

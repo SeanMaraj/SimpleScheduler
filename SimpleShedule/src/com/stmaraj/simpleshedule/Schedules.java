@@ -3,8 +3,11 @@ package com.stmaraj.simpleshedule;
 import android.os.Bundle;
 import android.R.integer;
 import android.app.Activity;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
@@ -33,16 +36,23 @@ public class Schedules extends Activity {
 	
 	public void btnAddClick(View v)
 	{
-		int i = v.getId();
-		int kj = R.id.btnAdd;
+//		int i = v.getId();
+//		int kj = R.id.btnAdd;
+//		
+//		if (i == kj)
+//		{
+//		Toast toast = Toast.makeText(this, i, Toast.LENGTH_LONG);
+//		toast.show();
+//		}
 		
-		if (i == kj)
-		{
-		Toast toast = Toast.makeText(this, i, Toast.LENGTH_LONG);
-		toast.show();
-		}
+		EditText e1 = new EditText(this);
 		
-		//tableLayout1.addv
+		TableLayout.LayoutParams pramss = new TableLayout.LayoutParams(LayoutParams.FILL_PARENT,
+                LayoutParams.WRAP_CONTENT, 1);
+		
+e1.setLayoutParams(pramss);
+		
+		tableLayout1.addView(e1);
 		
 	}
 

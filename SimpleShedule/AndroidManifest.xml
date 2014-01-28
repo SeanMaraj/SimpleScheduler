@@ -35,6 +35,10 @@
             android:label="@string/title_activity_schedules"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
+        <activity
+            android:name="com.stmaraj.simpleshedule.Test"
+            android:label="@string/title_activity_test" >
+        </activity>
     </application>
 
 </manifest>

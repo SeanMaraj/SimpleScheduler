@@ -55,7 +55,6 @@
                 android:gravity="center"
                 android:ems="10" >
 
-                <requestFocus />
             </EditText>
 
         </TableRow>
