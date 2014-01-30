@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
@@ -21,10 +23,8 @@ public class Schedules extends Activity {
 		super.onCreate(savedInstanceState);
 		
 	    tableLayout1 = (TableLayout) findViewById(R.id.TableLayout1);
-
-		
-		
 		setContentView(R.layout.activity_schedules);
+		btnAddClick((LinearLayout)findViewById(R.id.LinearLayoutSchedules));
 	}
 
 	@Override
@@ -36,24 +36,27 @@ public class Schedules extends Activity {
 	
 	public void btnAddClick(View v)
 	{
-//		int i = v.getId();
-//		int kj = R.id.btnAdd;
+
+		LinearLayout linearLayout = (LinearLayout)findViewById(R.id.LinearLayoutSchedules);
+		ScheduleEntryField schedule = new ScheduleEntryField(this);
+		
+		//set length and width of schedule
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,
+                LayoutParams.WRAP_CONTENT);
+		
+		
+//		RelativeLayout.LayoutParams parassms = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT,
+//                LayoutParams.WRAP_CONTENT);
 //		
-//		if (i == kj)
-//		{
-//		Toast toast = Toast.makeText(this, i, Toast.LENGTH_LONG);
-//		toast.show();
-//		}
+//		parassms.
+//		params.
+		schedule.setLayoutParams(params);
 		
-		EditText e1 = new EditText(this);
+		//add schedule
+		linearLayout.addView(schedule);
 		
-		TableLayout.LayoutParams pramss = new TableLayout.LayoutParams(LayoutParams.FILL_PARENT,
-                LayoutParams.WRAP_CONTENT, 1);
-		
-e1.setLayoutParams(pramss);
-		
-		tableLayout1.addView(e1);
-		
+		Toast.makeText(this, "New Schedule", Toast.LENGTH_SHORT).show();
+
 	}
 
 }

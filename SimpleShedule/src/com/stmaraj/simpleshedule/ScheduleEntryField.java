@@ -18,6 +18,9 @@ public class ScheduleEntryField extends LinearLayout{
 	public ScheduleEntryField(Context context) {
 		super(context);
 		
+		LayoutInflater inflater = LayoutInflater.from(context);
+        inflater.inflate(R.layout.schedule_entry, this);
+		
 		loadViews();
 		
 	}
@@ -26,14 +29,14 @@ public class ScheduleEntryField extends LinearLayout{
         super(context, attrs);
  
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.test_layout, this);
+        inflater.inflate(R.layout.schedule_entry, this);
  
         loadViews();
     }
  
     private void loadViews() {
-        tv = (TextView)findViewById(R.id.txtTest);
-        btn = (Button)findViewById(R.id.btnTest);
+//        tv = (TextView)findViewById(R.id.txtTest);
+//        btn = (Button)findViewById(R.id.btnTest);
 
     }
 
