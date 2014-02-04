@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayoutSchedules"
+    android:id="@+id/RelativeLayoutSchedules1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -21,29 +21,40 @@
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <View
-        android:id="@+id/View1"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:background="#868686" />
-
-    <com.stmaraj.simpleshedule.ScheduleEntryField
-        android:id="@+id/firstSchedule"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/View1" />
-
-
-    <!--  Button
-        android:id="@+id/btnAdd"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="1000"
-        android:layout_centerHorizontal="true"
-        android:onClick="btnAddClick"
-        android:text="+" />-->
-
+    <ScrollView 
+        android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:layout_below="@id/textView1">
+    	
+        <RelativeLayout
+		    android:id="@+id/RelativeLayoutSchedules2"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent">
+    
+		    <View
+		        android:id="@+id/View1"
+		        android:layout_width="match_parent"
+		        android:layout_height="2dp"
+		        android:layout_alignParentLeft="true"
+		        
+		        android:background="#868686" />
+		
+		    <com.stmaraj.simpleshedule.ScheduleEntryField
+		        android:id="@+id/firstSchedule"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/View1" />
+		
+		
+		    <!--  Button
+		        android:id="@+id/btnAdd"
+		        style="?android:attr/buttonStyleSmall"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="1000"
+		        android:layout_centerHorizontal="true"
+		        android:onClick="btnAddClick"
+		        android:text="+" />-->
+        </RelativeLayout>
+	</ScrollView>
 </RelativeLayout>

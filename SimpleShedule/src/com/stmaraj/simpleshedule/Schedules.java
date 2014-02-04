@@ -28,7 +28,7 @@ public class Schedules extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_schedules);
 		
-		relativeLayout = (RelativeLayout)findViewById(R.id.RelativeLayoutSchedules);
+		relativeLayout = (RelativeLayout)findViewById(R.id.RelativeLayoutSchedules2);
 		
 		// set id so future schedules can stack
 		firstSchedule = (ScheduleEntryField)findViewById(R.id.firstSchedule);
