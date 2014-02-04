@@ -24,23 +24,20 @@ public class MainActivity extends Activity {
 	public void onClick(View v)
 	{
 		Intent intent = null;
-		
-		if (v.getId() == R.id.btnSchedule)
+
+		switch (v.getId())
 		{
-			intent = new Intent(this, Schedules.class);
+			case R.id.btnSchedule: 
+				intent = new Intent(this, Schedules.class);
+				break;
+			case R.id.button1:
+				intent = new Intent(this, ToDo.class);
+				break;
+			case R.id.btnTest:
+				intent = new Intent(this, Test.class);
+				break;
 		}
-		
-		if (v.getId() == R.id.button1)
-		{
-			intent = new Intent(this, ToDo.class);
-		}
-		
-		if (v.getId() == R.id.btnTest)
-		{
-			intent = new Intent(this, Test.class);
-		}
-		
-		
+
 		startActivity(intent);
 	}
 

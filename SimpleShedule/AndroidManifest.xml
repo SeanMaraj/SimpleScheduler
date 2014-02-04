@@ -32,8 +32,7 @@
         </activity>
         <activity
             android:name="com.stmaraj.simpleshedule.Schedules"
-            android:label="@string/title_activity_schedules"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:label="@string/title_activity_schedules" >
         </activity>
         <activity
             android:name="com.stmaraj.simpleshedule.Test"

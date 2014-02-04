@@ -13,7 +13,6 @@ public class ScheduleEntryField extends LinearLayout{
 	
 	private TextView tv;
 	private Button btn;
-	
 
 	public ScheduleEntryField(Context context) {
 		super(context);
@@ -22,7 +21,6 @@ public class ScheduleEntryField extends LinearLayout{
         inflater.inflate(R.layout.schedule_entry, this);
 		
 		loadViews();
-		
 	}
  
     public ScheduleEntryField(Context context, AttributeSet attrs) {
@@ -37,7 +35,6 @@ public class ScheduleEntryField extends LinearLayout{
     private void loadViews() {
 //        tv = (TextView)findViewById(R.id.txtTest);
 //        btn = (Button)findViewById(R.id.btnTest);
-
     }
 
 
