@@ -11,7 +11,7 @@
     tools:context=".Schedules" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -19,12 +19,14 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:text="Large Text"
+        android:clickable="true"   
+        android:onClick="onClick"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ScrollView 
         android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
-    	android:layout_below="@id/textView1">
+    	android:layout_below="@id/txtDate">
     	
         <RelativeLayout
 		    android:id="@+id/RelativeLayoutSchedules2"
