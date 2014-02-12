@@ -4,10 +4,13 @@ package com.stmaraj.simpleshedule;
 import java.util.GregorianCalendar;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.DialogInterface;
 import android.text.format.DateFormat;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -69,6 +72,9 @@ public class Schedules extends Activity implements OnClickListener {
 			case R.id.txtDate:
 				setDate();
 				break;
+			case R.id.btnTest:
+				setTime();
+				break;
 		}
 	}
 	
@@ -88,6 +94,40 @@ public class Schedules extends Activity implements OnClickListener {
 		btnAdd.setLayoutParams(layoutParams);
 		
 		id++;
+    }
+    
+    public void setTime()
+    {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	LayoutInflater inflater = this.getLayoutInflater();
+    	
+    	
+    	builder.setTitle("Set Time");
+    	builder.setView(inflater.inflate(R.layout.settime_layout, null));
+    	
+    	
+    	builder.setPositiveButton("SET", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				Toast.makeText(Schedules.this, "Positive", Toast.LENGTH_SHORT).show();
+			}
+		});
+    	
+    	builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				Toast.makeText(Schedules.this, "Negative", Toast.LENGTH_SHORT).show();
+			}
+		});
+    	
+    	AlertDialog dialog = builder.create();
+    	dialog.show();
+    	
+    	
     }
     
     public void setDate() 

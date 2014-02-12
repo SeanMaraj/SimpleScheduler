@@ -48,15 +48,15 @@
 		        android:layout_below="@id/View1" />
 		
 		
-		    <!--  Button
-		        android:id="@+id/btnAdd"
+		    <Button
+		        android:id="@+id/btnTest"
 		        style="?android:attr/buttonStyleSmall"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_below="1000"
+		        android:layout_below="@id/firstSchedule"
 		        android:layout_centerHorizontal="true"
-		        android:onClick="btnAddClick"
-		        android:text="+" />-->
+		        android:onClick="onClick"
+		        android:text="Test" />
         </RelativeLayout>
 	</ScrollView>
 </RelativeLayout>
