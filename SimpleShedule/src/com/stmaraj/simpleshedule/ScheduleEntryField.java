@@ -6,13 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 
 public class ScheduleEntryField extends LinearLayout{
 	
-	private TextView tv;
-	private Button btn;
+	private TableRow tableRow;
+	private TextView time1;
+	private TextView time2;
 
 	public ScheduleEntryField(Context context) {
 		super(context);
@@ -33,8 +35,19 @@ public class ScheduleEntryField extends LinearLayout{
     }
  
     private void loadViews() {
-//        tv = (TextView)findViewById(R.id.txtTest);
-//        btn = (Button)findViewById(R.id.btnTest);
+
+    	time1 = (TextView)findViewById(R.id.txtTime11);
+    	time2 = (TextView)findViewById(R.id.txtTime13);
+    }
+    
+    public void setTime1(String text)
+    {
+    	time1.setText(text);
+    }
+    
+    public void setTime2(String text)
+    {
+    	time2.setText(text);
     }
 
 

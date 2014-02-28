@@ -3,10 +3,12 @@ package com.stmaraj.simpleshedule;
 
 import java.util.GregorianCalendar;
 import android.os.Bundle;
+import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.text.format.DateFormat;
 import android.view.Gravity;
@@ -18,7 +20,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 
 public class Schedules extends Activity implements OnClickListener {
@@ -31,11 +36,19 @@ public class Schedules extends Activity implements OnClickListener {
 	int year = 0;
 	int monthOfYear = 0;
 	int dayOfMonth = 0;
+	int hour1;
+	int hour2;
+	int minute1;
+	int minute2;
+	TimePicker timePicker;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_schedules);
+		
+		
 		
 		relativeLayout = (RelativeLayout)findViewById(R.id.RelativeLayoutSchedules2);
 		txtDate = (TextView)findViewById(R.id.txtDate);		
@@ -72,16 +85,15 @@ public class Schedules extends Activity implements OnClickListener {
 			case R.id.txtDate:
 				setDate();
 				break;
-			case R.id.btnTest:
-				setTime();
-				break;
 		}
 	}
 	
     public void addScheduleField()
     {
-    	ScheduleEntryField schedule = new ScheduleEntryField(this);
+    	final ScheduleEntryField schedule = new ScheduleEntryField(this);
 		schedule.setId(id);
+		schedule.setClickable(true);
+		
 		
 		//set length and width of schedule 
 		RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
@@ -96,37 +108,26 @@ public class Schedules extends Activity implements OnClickListener {
 		id++;
     }
     
-    public void setTime()
+    public void testTime(View v) {
+    	
+    	//timePicker = (TimePicker)findViewById(R.id.timePicker1);
+		TextView button = (TextView)findViewById(R.id.testtxtview);
+		button.setText("testy");
+		
+		Toast.makeText(Schedules.this, "btn:", Toast.LENGTH_LONG).show();
+    		}
+
+    
+    public void setTime(final View v)
     {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	
+    	AlertDialog alert = new AlertDialog.Builder(Schedules.this).create();
+    	alert.setTitle("Hello");
+    	
     	LayoutInflater inflater = this.getLayoutInflater();
+    	alert.setView(inflater.inflate(R.layout.settime_layout, null));
     	
-    	
-    	builder.setTitle("Set Time");
-    	builder.setView(inflater.inflate(R.layout.settime_layout, null));
-    	
-    	
-    	builder.setPositiveButton("SET", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				
-				Toast.makeText(Schedules.this, "Positive", Toast.LENGTH_SHORT).show();
-			}
-		});
-    	
-    	builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				
-				Toast.makeText(Schedules.this, "Negative", Toast.LENGTH_SHORT).show();
-			}
-		});
-    	
-    	AlertDialog dialog = builder.create();
-    	dialog.show();
-    	
+    	alert.show();
     	
     }
     
