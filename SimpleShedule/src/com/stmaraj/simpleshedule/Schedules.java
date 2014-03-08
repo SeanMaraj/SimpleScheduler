@@ -2,6 +2,8 @@ package com.stmaraj.simpleshedule;
 
 
 import java.util.GregorianCalendar;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.R.integer;
 import android.app.Activity;
@@ -10,6 +12,8 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,7 +30,7 @@ import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 
-public class Schedules extends Activity implements OnClickListener {
+public class Schedules extends FragmentActivity implements OnClickListener {
 	
 	RelativeLayout relativeLayout;
 	ScheduleEntryField firstSchedule;
@@ -41,6 +45,8 @@ public class Schedules extends Activity implements OnClickListener {
 	int minute1;
 	int minute2;
 	TimePicker timePicker;
+	SetTimeDialog setTimeDialog;
+	FragmentManager fm = getSupportFragmentManager();
 	
 
 	@Override
@@ -95,6 +101,7 @@ public class Schedules extends Activity implements OnClickListener {
 		schedule.setClickable(true);
 		
 		
+		
 		//set length and width of schedule 
 		RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		parameters.addRule(RelativeLayout.BELOW, id-1);
@@ -110,25 +117,22 @@ public class Schedules extends Activity implements OnClickListener {
     
     public void testTime(View v) {
     	
-    	//timePicker = (TimePicker)findViewById(R.id.timePicker1);
-		TextView button = (TextView)findViewById(R.id.testtxtview);
-		button.setText("testy");
+    	Dialog dialog = setTimeDialog.getDialog();
+		TimePicker timePicker1 = (TimePicker)dialog.findViewById(R.id.timePicker1);
+		int time = timePicker1.getCurrentHour();
 		
-		Toast.makeText(Schedules.this, "btn:", Toast.LENGTH_LONG).show();
-    		}
-
+		Toast.makeText(this, String.valueOf(time), Toast.LENGTH_LONG).show();
+    }
     
     public void setTime(final View v)
     {
+    	Bundle bundle = new Bundle(1);
+    	//bundle.putInt("viewId", v.getId());
+    	bundle.putInt("viewId", ((View)v.getParent().getParent()).getId());
     	
-    	AlertDialog alert = new AlertDialog.Builder(Schedules.this).create();
-    	alert.setTitle("Hello");
-    	
-    	LayoutInflater inflater = this.getLayoutInflater();
-    	alert.setView(inflater.inflate(R.layout.settime_layout, null));
-    	
-    	alert.show();
-    	
+    	setTimeDialog = new SetTimeDialog();
+	    setTimeDialog.setArguments(bundle);
+    	setTimeDialog.show(fm, "setTimeD"); 
     }
     
     public void setDate() 

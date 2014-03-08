@@ -36,8 +36,8 @@ public class ScheduleEntryField extends LinearLayout{
  
     private void loadViews() {
 
-    	time1 = (TextView)findViewById(R.id.txtTime11);
-    	time2 = (TextView)findViewById(R.id.txtTime13);
+    	time1 = (TextView)findViewById(R.id.txtTime1);
+    	time2 = (TextView)findViewById(R.id.txtTime2);
     }
     
     public void setTime1(String text)
