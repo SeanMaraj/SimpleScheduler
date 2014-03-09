@@ -96,11 +96,10 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 	
     public void addScheduleField()
     {
+    	// create new schedule entry field
     	final ScheduleEntryField schedule = new ScheduleEntryField(this);
 		schedule.setId(id);
 		schedule.setClickable(true);
-		
-		
 		
 		//set length and width of schedule 
 		RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
@@ -115,19 +114,10 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 		id++;
     }
     
-    public void testTime(View v) {
-    	
-    	Dialog dialog = setTimeDialog.getDialog();
-		TimePicker timePicker1 = (TimePicker)dialog.findViewById(R.id.timePicker1);
-		int time = timePicker1.getCurrentHour();
-		
-		Toast.makeText(this, String.valueOf(time), Toast.LENGTH_LONG).show();
-    }
-    
     public void setTime(final View v)
     {
+    	// send the id of the schedule entry field
     	Bundle bundle = new Bundle(1);
-    	//bundle.putInt("viewId", v.getId());
     	bundle.putInt("viewId", ((View)v.getParent().getParent()).getId());
     	
     	setTimeDialog = new SetTimeDialog();
@@ -137,6 +127,7 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     
     public void setDate() 
     {
+    	// create dialog to set the date
 		DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, year, monthOfYear, dayOfMonth);
 		datePickerDialog.show();
     }

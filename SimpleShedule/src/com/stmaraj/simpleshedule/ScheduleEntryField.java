@@ -48,9 +48,5 @@ public class ScheduleEntryField extends LinearLayout{
     public void setTime2(String text)
     {
     	time2.setText(text);
-    }
-
-
-	
-	
+    }	
 }
