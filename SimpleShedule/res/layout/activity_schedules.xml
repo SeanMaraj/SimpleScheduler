@@ -50,4 +50,27 @@
 		    
         </RelativeLayout>
 	</ScrollView>
+
+    <Button
+        android:id="@+id/btnSave"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtDate"
+        android:layout_alignBottom="@+id/txtDate"
+        android:layout_alignParentRight="true"
+        android:onClick="saveSchedules"
+        android:text="Save" />
+
+    <Button
+        android:id="@+id/btnLoad"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnSave"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/btnSave"
+        android:onClick="loadSchedules"
+        android:text="Load" />
+
 </RelativeLayout>

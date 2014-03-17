@@ -1,16 +1,27 @@
 package com.stmaraj.simpleshedule;
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.GregorianCalendar;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.R.integer;
+import android.R.string;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -36,30 +47,27 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 	ScheduleEntryField firstSchedule;
 	Button btnAdd;
 	TextView txtDate;
-	int id = 1001;
-	int year = 0;
-	int monthOfYear = 0;
-	int dayOfMonth = 0;
-	int hour1;
-	int hour2;
-	int minute1;
-	int minute2;
 	TimePicker timePicker;
 	SetTimeDialog setTimeDialog;
+	
+	int id = 1001;
+	int dayOfMonth = 0, monthOfYear = 0, year = 0 ;
+	int hour1, hour2;
+	int minute1, minute2;
+	
+	int schedulesCount = 1;
+	
 	FragmentManager fm = getSupportFragmentManager();
 	
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_schedules);
 		
-		
-		
 		relativeLayout = (RelativeLayout)findViewById(R.id.RelativeLayoutSchedules2);
 		txtDate = (TextView)findViewById(R.id.txtDate);		
 		
-		// set id so future schedules can stack
+		// set id of first schedule which has already been created so future schedules can stack
 		firstSchedule = (ScheduleEntryField)findViewById(R.id.firstSchedule);
 		firstSchedule.setId(1000);
 		
@@ -111,6 +119,7 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 		layoutParams.addRule(RelativeLayout.BELOW, id);
 		btnAdd.setLayoutParams(layoutParams);
 		
+		schedulesCount++;
 		id++;
     }
     
@@ -146,5 +155,79 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 			txtDate.setText(DateFormat.format("MMMM dd,  yyyy", date));
 		}
     };
+    
+    public void saveSchedules(View v) throws IOException, JSONException
+    {
+    	
+    	JSONArray schedulesArray = new JSONArray();
+    	
+    	JSONObject dateJSON = new JSONObject();
+    	GregorianCalendar date = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+    	dateJSON.put("date", DateFormat.format("MMMM dd,  yyyy", date));
+    	schedulesArray.put(dateJSON);
+    	
+    	for (int i=0; i<schedulesCount; i++)
+    	{
+    		ScheduleEntryField scheduleEntryField = (ScheduleEntryField)findViewById(1000+i);
+    		
+    		JSONObject scheduleJSON = new JSONObject();
+    		scheduleJSON.put("time1", scheduleEntryField.getTime1());
+    		scheduleJSON.put("time2", scheduleEntryField.getTime2());
+    		
+    		schedulesArray.put(scheduleJSON);
+    	}
+    	
+    	String filename = String.valueOf(monthOfYear) + String.valueOf(dayOfMonth) + String.valueOf(year);
+    	
+		FileOutputStream outputStream;
+		outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+		outputStream.write(schedulesArray.toString().getBytes());
+		outputStream.close();
+	
+		Toast.makeText(this, filename, Toast.LENGTH_SHORT).show();
+    }
+    
+    public void loadSchedules(View v) throws JSONException, IOException
+    {
+    	Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
+    	StringBuffer fileContent = new StringBuffer("");
+    	FileInputStream fileInputStream;
+		int ch;
+		
+    	String filename = String.valueOf(monthOfYear) + String.valueOf(dayOfMonth) + String.valueOf(year);
+    	Toast.makeText(this, filename, Toast.LENGTH_SHORT).show();
+    	
+
+		
+		fileInputStream = openFileInput(filename);
+		
+		while ((ch = fileInputStream.read()) != -1)
+		{
+			fileContent.append((char)ch); 
+		}
+		
+		
+		JSONArray schedulesArray = new JSONArray(new String(fileContent));
+		
+		for (int i=0; i<schedulesCount; i++)
+    	{
+    		ScheduleEntryField scheduleEntryField = (ScheduleEntryField)findViewById(1000+i);
+    		
+    		JSONObject scheduleJSON = schedulesArray.getJSONObject(i+1);
+    		
+    		scheduleEntryField.setTime1(String.valueOf(scheduleJSON.get("time1")));
+    		scheduleEntryField.setTime2(String.valueOf(scheduleJSON.get("time2")));
+    	}
+			
+
+    }
+    
+    public void setTimeValues(int hour1, int hour2, int minute1, int minute2)
+    {
+    	this.hour1 = hour1;
+    	this.hour2 = hour2;
+    	this.minute1 = minute1;
+    	this.minute2 = minute2;	
+    }
 
 }

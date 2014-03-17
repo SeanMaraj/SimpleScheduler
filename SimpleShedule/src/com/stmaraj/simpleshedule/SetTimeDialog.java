@@ -32,6 +32,7 @@ public class SetTimeDialog extends DialogFragment {
 							public void onClick(
 									DialogInterface dialogInterface, int id) {
 
+						
 								Dialog dialog = SetTimeDialog.this.getDialog();
 								TimePicker timePicker1 = (TimePicker) dialog
 										.findViewById(R.id.timePicker1);
@@ -44,16 +45,17 @@ public class SetTimeDialog extends DialogFragment {
 								int min2 = timePicker2.getCurrentMinute();
 
 								// get the id of the schedule field entry that was clicked
-								int scheduleEntryFieldId = getArguments()
-										.getInt("viewId");
-								ScheduleEntryField scheduleEntryField = (ScheduleEntryField) getActivity()
-										.findViewById(scheduleEntryFieldId);
+								int scheduleEntryFieldId = getArguments().getInt("viewId");
+								Schedules schedulesActivity = (Schedules) getActivity();
+								ScheduleEntryField scheduleEntryField = (ScheduleEntryField) schedulesActivity.findViewById(scheduleEntryFieldId);
 								
 								// display the chosen time in the schedule entry field
 								scheduleEntryField.setTime1(String.valueOf(hour1 + ":"
 												+ String.valueOf(min1)));
 								scheduleEntryField.setTime2(String.valueOf(hour2 + ":"
 												+ String.valueOf(min2)));
+								
+								//schedulesActivity.setTimeValues(hour1);
 							}
 						})
 				.setNegativeButton("Cancel",
