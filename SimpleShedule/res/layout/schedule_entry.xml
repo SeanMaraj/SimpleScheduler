@@ -63,4 +63,28 @@
         android:layout_below="@+id/edtEntry"
         android:background="#868686" />
 
+    <Button
+        android:id="@+id/btnDelete"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtTimeChange"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/txtTimeChange"
+        android:textSize="10dp"
+        android:onClick="deleteSchedule"
+        android:text="Delete" />
+
+    <Button
+        android:id="@+id/btnId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnDelete"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/btnDelete"
+        android:layout_toRightOf="@+id/txtTime2"
+        android:textSize="10dp"
+        android:onClick="getId"
+        android:text="GetID" />
+
 </RelativeLayout>

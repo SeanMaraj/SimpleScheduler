@@ -34,7 +34,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -158,14 +160,16 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     
     public void saveSchedules(View v) throws IOException, JSONException
     {
-    	
+    	// array to save data
     	JSONArray schedulesArray = new JSONArray();
     	
+    	// save date
     	JSONObject dateJSON = new JSONObject();
     	GregorianCalendar date = new GregorianCalendar(year, monthOfYear, dayOfMonth);
     	dateJSON.put("date", DateFormat.format("MMMM dd,  yyyy", date));
     	schedulesArray.put(dateJSON);
     	
+    	// save all entry field data into array
     	for (int i=0; i<schedulesCount; i++)
     	{
     		ScheduleEntryField scheduleEntryField = (ScheduleEntryField)findViewById(1000+i);
@@ -173,7 +177,6 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     		JSONObject scheduleJSON = new JSONObject();
     		scheduleJSON.put("time1", scheduleEntryField.getTime1());
     		scheduleJSON.put("time2", scheduleEntryField.getTime2());
-    		
     		schedulesArray.put(scheduleJSON);
     	}
     	
@@ -189,35 +192,36 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     
     public void loadSchedules(View v) throws JSONException, IOException
     {
-    	Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
-    	StringBuffer fileContent = new StringBuffer("");
-    	FileInputStream fileInputStream;
-		int ch;
-		
-    	String filename = String.valueOf(monthOfYear) + String.valueOf(dayOfMonth) + String.valueOf(year);
-    	Toast.makeText(this, filename, Toast.LENGTH_SHORT).show();
+    	ScrollView scrollView = (ScrollView)findViewById(R.id.scrollView);
+    	scrollView.removeAllViews();
     	
-
-		
-		fileInputStream = openFileInput(filename);
-		
-		while ((ch = fileInputStream.read()) != -1)
-		{
-			fileContent.append((char)ch); 
-		}
-		
-		
-		JSONArray schedulesArray = new JSONArray(new String(fileContent));
-		
-		for (int i=0; i<schedulesCount; i++)
-    	{
-    		ScheduleEntryField scheduleEntryField = (ScheduleEntryField)findViewById(1000+i);
-    		
-    		JSONObject scheduleJSON = schedulesArray.getJSONObject(i+1);
-    		
-    		scheduleEntryField.setTime1(String.valueOf(scheduleJSON.get("time1")));
-    		scheduleEntryField.setTime2(String.valueOf(scheduleJSON.get("time2")));
-    	}
+//    	StringBuffer fileContent = new StringBuffer("");
+//    	FileInputStream fileInputStream;
+//		int ch;
+//		
+//		// set filename according to date
+//    	String filename = String.valueOf(monthOfYear) + String.valueOf(dayOfMonth) + String.valueOf(year);
+//    	Toast.makeText(this, filename, Toast.LENGTH_SHORT).show();
+//		
+//		fileInputStream = openFileInput(filename);
+//		
+//		while ((ch = fileInputStream.read()) != -1)
+//		{
+//			fileContent.append((char)ch); 
+//		}
+//		
+//		JSONArray schedulesArray = new JSONArray(new String(fileContent));
+//		
+//		// minus one length because of date in array
+//		for (int i=0; i<schedulesArray.length()-1; i++)
+//    	{
+//    		ScheduleEntryField scheduleEntryField = (ScheduleEntryField)findViewById(1000+i);
+//    		
+//    		JSONObject scheduleJSON = schedulesArray.getJSONObject(i+1);
+//    		
+//    		scheduleEntryField.setTime1(String.valueOf(scheduleJSON.get("time1")));
+//    		scheduleEntryField.setTime2(String.valueOf(scheduleJSON.get("time2")));
+//    	}
 			
 
     }
@@ -229,5 +233,19 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     	this.minute1 = minute1;
     	this.minute2 = minute2;	
     }
+    
+    public void deleteSchedule(View v) {
+    
+    	// find parent entry field
+    	ScheduleEntryField scheduleEntryField = (ScheduleEntryField)v.getParent().getParent();
+    	
+    	// delete all views within entry field and delete entry field itself
+		scheduleEntryField.removeAllViews();
+		((ScrollView)scheduleEntryField.getParent().getParent()).removeView(scheduleEntryField);
+		
+		schedulesCount--;
+	}
+    
+    
 
 }
