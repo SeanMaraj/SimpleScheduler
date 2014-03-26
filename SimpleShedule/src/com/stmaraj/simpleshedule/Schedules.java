@@ -234,8 +234,8 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     	this.minute2 = minute2;	
     }
     
-    public void deleteSchedule(View v) {
-    
+    public void deleteSchedule(View v)
+    {
     	// find parent entry field
     	ScheduleEntryField scheduleEntryField = (ScheduleEntryField)v.getParent().getParent();
     	
@@ -244,8 +244,11 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 		((ScrollView)scheduleEntryField.getParent().getParent()).removeView(scheduleEntryField);
 		
 		schedulesCount--;
-	}
+    }
     
-    
-
+    public void getId(View v)
+    {
+    	int entryId = ((View)(v.getParent().getParent())).getId();
+    	Toast.makeText(this, String.valueOf(entryId), Toast.LENGTH_SHORT).show();
+    }
 }
