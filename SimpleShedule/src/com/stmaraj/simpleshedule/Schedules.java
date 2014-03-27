@@ -79,7 +79,7 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 		btnAdd.setOnClickListener(this);
 		btnAdd.setGravity(Gravity.CENTER);
 		RelativeLayout.LayoutParams btnAddParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		btnAddParams.addRule(RelativeLayout.BELOW, 1000);
+		btnAddParams.addRule(RelativeLayout.BELOW, R.id.linearLayoutSchedules);
 		relativeLayout.addView(btnAdd, btnAddParams);
 	}
 
@@ -96,7 +96,7 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 		switch( v.getId() )
 		{
 			case 100:
-				addScheduleField();
+				addScheduleField("00:00","00:00");
 				break;
 			case R.id.txtDate:
 				setDate();
@@ -104,22 +104,18 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 		}
 	}
 	
-    public void addScheduleField()
+    public void addScheduleField(String time1, String time2)
     {
     	// create new schedule entry field
     	final ScheduleEntryField schedule = new ScheduleEntryField(this);
-		schedule.setId(id);
+    	schedule.setId(id);
+		schedule.setTime1(time1);
+		schedule.setTime2(time2);
 		schedule.setClickable(true);
 		
-		//set length and width of schedule 
-		RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		parameters.addRule(RelativeLayout.BELOW, id-1);
-		relativeLayout.addView(schedule, parameters);
-		
-		// move button below new schedule
-		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) btnAdd.getLayoutParams();
-		layoutParams.addRule(RelativeLayout.BELOW, id);
-		btnAdd.setLayoutParams(layoutParams);
+		// add schedule to layout
+		LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linearLayoutSchedules);
+		linearLayout.addView(schedule);
 		
 		schedulesCount++;
 		id++;
@@ -160,6 +156,8 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     
     public void saveSchedules(View v) throws IOException, JSONException
     {
+    	LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linearLayoutSchedules);
+    	
     	// array to save data
     	JSONArray schedulesArray = new JSONArray();
     	
@@ -170,9 +168,9 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     	schedulesArray.put(dateJSON);
     	
     	// save all entry field data into array
-    	for (int i=0; i<schedulesCount; i++)
+    	for (int i=0; i<linearLayout.getChildCount(); i++)
     	{
-    		ScheduleEntryField scheduleEntryField = (ScheduleEntryField)findViewById(1000+i);
+    		ScheduleEntryField scheduleEntryField = (ScheduleEntryField) linearLayout.getChildAt(i);
     		
     		JSONObject scheduleJSON = new JSONObject();
     		scheduleJSON.put("time1", scheduleEntryField.getTime1());
@@ -192,38 +190,37 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     
     public void loadSchedules(View v) throws JSONException, IOException
     {
-    	ScrollView scrollView = (ScrollView)findViewById(R.id.scrollView);
-    	scrollView.removeAllViews();
+    	// remove all existing entries
+    	LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linearLayoutSchedules);
+    	linearLayout.removeAllViews();
     	
-//    	StringBuffer fileContent = new StringBuffer("");
-//    	FileInputStream fileInputStream;
-//		int ch;
-//		
-//		// set filename according to date
-//    	String filename = String.valueOf(monthOfYear) + String.valueOf(dayOfMonth) + String.valueOf(year);
-//    	Toast.makeText(this, filename, Toast.LENGTH_SHORT).show();
-//		
-//		fileInputStream = openFileInput(filename);
-//		
-//		while ((ch = fileInputStream.read()) != -1)
-//		{
-//			fileContent.append((char)ch); 
-//		}
-//		
-//		JSONArray schedulesArray = new JSONArray(new String(fileContent));
-//		
-//		// minus one length because of date in array
-//		for (int i=0; i<schedulesArray.length()-1; i++)
-//    	{
-//    		ScheduleEntryField scheduleEntryField = (ScheduleEntryField)findViewById(1000+i);
-//    		
-//    		JSONObject scheduleJSON = schedulesArray.getJSONObject(i+1);
-//    		
-//    		scheduleEntryField.setTime1(String.valueOf(scheduleJSON.get("time1")));
-//    		scheduleEntryField.setTime2(String.valueOf(scheduleJSON.get("time2")));
-//    	}
-			
-
+    	StringBuffer fileContent = new StringBuffer("");
+    	FileInputStream fileInputStream;
+		int ch;
+		
+		// set filename according to date
+    	String filename = String.valueOf(monthOfYear) + String.valueOf(dayOfMonth) + String.valueOf(year);
+    	Toast.makeText(this, filename, Toast.LENGTH_SHORT).show();
+		
+		fileInputStream = openFileInput(filename);
+		
+		while ((ch = fileInputStream.read()) != -1)
+		{
+			fileContent.append((char)ch); 
+		}
+		
+		JSONArray schedulesArray = new JSONArray(new String(fileContent));
+		
+		// minus one length because of date in array
+		for (int i=0; i<schedulesArray.length()-1; i++)
+    	{
+			// get times from the JSON file
+			JSONObject scheduleJSON = schedulesArray.getJSONObject(i+1);
+			String time1 = String.valueOf(scheduleJSON.get("time1"));
+    		String time2 = String.valueOf(scheduleJSON.get("time2"));
+    		
+    		addScheduleField(time1, time2);
+    	}
     }
     
     public void setTimeValues(int hour1, int hour2, int minute1, int minute2)
@@ -241,7 +238,8 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     	
     	// delete all views within entry field and delete entry field itself
 		scheduleEntryField.removeAllViews();
-		((ScrollView)scheduleEntryField.getParent().getParent()).removeView(scheduleEntryField);
+		LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linearLayoutSchedules);
+		linearLayout.removeView(scheduleEntryField);
 		
 		schedulesCount--;
     }

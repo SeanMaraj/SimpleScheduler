@@ -29,16 +29,13 @@ public class SetTimeDialog extends DialogFragment {
 				.setPositiveButton("Set",
 						new DialogInterface.OnClickListener() {
 							@Override
-							public void onClick(
-									DialogInterface dialogInterface, int id) {
-
+							public void onClick(DialogInterface dialogInterface, int id) {
 						
 								Dialog dialog = SetTimeDialog.this.getDialog();
-								TimePicker timePicker1 = (TimePicker) dialog
-										.findViewById(R.id.timePicker1);
-								TimePicker timePicker2 = (TimePicker) dialog
-										.findViewById(R.id.timePicker2);
+								TimePicker timePicker1 = (TimePicker) dialog.findViewById(R.id.timePicker1);
+								TimePicker timePicker2 = (TimePicker) dialog.findViewById(R.id.timePicker2);
 
+								// get all values
 								int hour1 = timePicker1.getCurrentHour();
 								int hour2 = timePicker2.getCurrentHour();
 								int min1 = timePicker1.getCurrentMinute();
@@ -50,12 +47,8 @@ public class SetTimeDialog extends DialogFragment {
 								ScheduleEntryField scheduleEntryField = (ScheduleEntryField) schedulesActivity.findViewById(scheduleEntryFieldId);
 								
 								// display the chosen time in the schedule entry field
-								scheduleEntryField.setTime1(String.valueOf(hour1 + ":"
-												+ String.valueOf(min1)));
-								scheduleEntryField.setTime2(String.valueOf(hour2 + ":"
-												+ String.valueOf(min2)));
-								
-								//schedulesActivity.setTimeValues(hour1);
+								scheduleEntryField.setTime1(String.valueOf(hour1 + ":" + String.valueOf(min1)));
+								scheduleEntryField.setTime2(String.valueOf(hour2 + ":" + String.valueOf(min2)));
 							}
 						})
 				.setNegativeButton("Cancel",
