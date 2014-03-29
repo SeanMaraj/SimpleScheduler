@@ -3,17 +3,13 @@ package com.stmaraj.simpleshedule;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 
 public class ScheduleEntryField extends LinearLayout{
 	
-	private TableRow tableRow;
 	private TextView time1;
 	private TextView time2;
 	private EditText entryText;

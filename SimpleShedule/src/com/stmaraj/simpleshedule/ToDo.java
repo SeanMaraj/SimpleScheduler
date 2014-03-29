@@ -3,10 +3,8 @@ package com.stmaraj.simpleshedule;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 
 import android.os.Bundle;
-import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;

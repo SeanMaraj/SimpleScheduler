@@ -1,6 +1,5 @@
 package com.stmaraj.simpleshedule;
 
-import android.R.integer;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
@@ -10,9 +9,7 @@ import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 public class SetTimeDialog extends DialogFragment {
 	View view;
