@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ public class ScheduleEntryField extends LinearLayout{
 	private TableRow tableRow;
 	private TextView time1;
 	private TextView time2;
+	private EditText entryText;
 
 	public ScheduleEntryField(Context context) {
 		super(context);
@@ -25,7 +27,8 @@ public class ScheduleEntryField extends LinearLayout{
 		loadViews();
 	}
  
-    public ScheduleEntryField(Context context, AttributeSet attrs) {
+	// called when loading up activity. One field is loaded by default
+	public ScheduleEntryField(Context context, AttributeSet attrs) {
         super(context, attrs);
  
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -34,29 +37,45 @@ public class ScheduleEntryField extends LinearLayout{
         loadViews();
     }
  
-    private void loadViews() {
+	private void loadViews() {
 
     	time1 = (TextView)findViewById(R.id.txtTime1);
     	time2 = (TextView)findViewById(R.id.txtTime2);
+    	entryText = (EditText)findViewById(R.id.edtEntry);
+    	
     }
-    
-    public void setTime1(String text)
+	
+	public void setTime1(String text)
     {
     	time1.setText(text);
     }
     
-    public void setTime2(String text)
+	public void setTime2(String text)
     {
     	time2.setText(text);
     }
     
-    public String getTime1()
+	public String getTime1()
     {
     	return (String)time1.getText();
     }
     
-    public String getTime2()
+	public String getTime2()
     {
 		return (String)time2.getText();
     }
+    
+	public void setEntryText(String text)
+    {
+    	entryText.setText(text);
+    }
+    
+	public String getEntryText()
+    {
+    	return entryText.getText().toString();
+		
+	}
+    
+    
+    
 }

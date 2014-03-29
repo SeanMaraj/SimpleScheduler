@@ -96,7 +96,7 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 		switch( v.getId() )
 		{
 			case 100:
-				addScheduleField("00:00","00:00");
+				addScheduleField("00:00","00:00", "Empty");
 				break;
 			case R.id.txtDate:
 				setDate();
@@ -104,13 +104,14 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 		}
 	}
 	
-    public void addScheduleField(String time1, String time2)
+    public void addScheduleField(String time1, String time2, String entryText)
     {
     	// create new schedule entry field
     	final ScheduleEntryField schedule = new ScheduleEntryField(this);
     	schedule.setId(id);
 		schedule.setTime1(time1);
 		schedule.setTime2(time2);
+		schedule.setEntryText(entryText);
 		schedule.setClickable(true);
 		
 		// add schedule to layout
@@ -175,6 +176,7 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     		JSONObject scheduleJSON = new JSONObject();
     		scheduleJSON.put("time1", scheduleEntryField.getTime1());
     		scheduleJSON.put("time2", scheduleEntryField.getTime2());
+    		scheduleJSON.put("entryText", scheduleEntryField.getEntryText());
     		schedulesArray.put(scheduleJSON);
     	}
     	
@@ -218,8 +220,9 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 			JSONObject scheduleJSON = schedulesArray.getJSONObject(i+1);
 			String time1 = String.valueOf(scheduleJSON.get("time1"));
     		String time2 = String.valueOf(scheduleJSON.get("time2"));
+    		String entryText = String.valueOf(scheduleJSON.get("entryText"));
     		
-    		addScheduleField(time1, time2);
+    		addScheduleField(time1, time2, entryText);
     	}
     }
     
