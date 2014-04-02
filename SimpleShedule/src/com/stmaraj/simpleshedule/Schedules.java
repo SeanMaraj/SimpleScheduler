@@ -10,16 +10,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
 import android.text.format.DateFormat;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -30,7 +34,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class Schedules extends FragmentActivity implements OnClickListener {
+public class Schedules extends Fragment implements OnClickListener {
 	
 	RelativeLayout relativeLayout;
 	ScheduleEntryField firstSchedule;
@@ -38,6 +42,9 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 	TextView txtDate;
 	TimePicker timePicker;
 	SetTimeDialog setTimeDialog;
+	View mainView;
+	Button btnId, btnSave, btnLoad;
+	
 	
 	int id = 1001;
 	int dayOfMonth = 0, monthOfYear = 0, year = 0 ;
@@ -46,84 +53,121 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 	
 	int schedulesCount = 1;
 	
-	FragmentManager fm = getSupportFragmentManager();
+	
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_schedules);
-		
-		relativeLayout = (RelativeLayout)findViewById(R.id.RelativeLayoutSchedules2);
-		txtDate = (TextView)findViewById(R.id.txtDate);		
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+ 
+        View rootView = inflater.inflate(R.layout.activity_schedules, container, false);
+        mainView = rootView;
+        
+        
+        
+        
+        btnSave = (Button)rootView.findViewById(R.id.btnSave);
+        btnLoad = (Button)rootView.findViewById(R.id.btnLoad);
+        btnId = (Button)rootView.findViewById(R.id.btnId);
+        btnSave.setOnClickListener(this);
+        btnLoad.setOnClickListener(this);
+        
+        relativeLayout = (RelativeLayout)rootView.findViewById(R.id.RelativeLayoutSchedules2);
+		txtDate = (TextView)rootView.findViewById(R.id.txtDate);
+		txtDate.setOnClickListener(this);
 		
 		// set id of first schedule which has already been created so future schedules can stack
-		firstSchedule = (ScheduleEntryField)findViewById(R.id.firstSchedule);
+		firstSchedule = (ScheduleEntryField)rootView.findViewById(R.id.firstSchedule);
 		firstSchedule.setId(1000);
+		firstSchedule.setButtonOnClick(this);
 		
 		// create add button and place below first schedule
-		btnAdd = new Button(this);
+		btnAdd = new Button(getActivity());
 		btnAdd.setId(100);
 		btnAdd.setOnClickListener(this);
 		btnAdd.setGravity(Gravity.CENTER);
 		RelativeLayout.LayoutParams btnAddParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		btnAddParams.addRule(RelativeLayout.BELOW, R.id.linearLayoutSchedules);
 		relativeLayout.addView(btnAdd, btnAddParams);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.schedules, menu);
-		return true;
-	}
+		
+		
+         
+        return rootView;
+    }
 
 	@Override
 	public void onClick(View v) {
-		
-		switch( v.getId() )
-		{
-			case 100:
-				addScheduleField("00:00","00:00", "Empty");
-				break;
-			case R.id.txtDate:
-				setDate();
-				break;
-		}
+		Toast.makeText(getActivity(), "outside", Toast.LENGTH_SHORT).show();
+		try {
+			switch( v.getId() )
+			{
+				case 100:
+					//Toast.makeText(getActivity(), "inside", Toast.LENGTH_SHORT).show();
+					addScheduleField("00:00","00:00", "Empty");
+					break;
+				case R.id.btnId:
+					getId(v);
+					break;
+				case R.id.btnDelete:
+					deleteSchedule(v);
+					break;
+				case R.id.txtTimeChange:
+					setTime(v);
+					break;
+				case R.id.btnSave:
+					saveSchedules(v);
+					break;
+				case R.id.btnLoad:
+					loadSchedules(v);
+					break;
+				case R.id.txtDate:
+					setDate();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+				
 	}
-	
+//	
     public void addScheduleField(String time1, String time2, String entryText)
     {
     	// create new schedule entry field
-    	final ScheduleEntryField schedule = new ScheduleEntryField(this);
+    	final ScheduleEntryField schedule = new ScheduleEntryField(getActivity());
     	schedule.setId(id);
 		schedule.setTime1(time1);
 		schedule.setTime2(time2);
 		schedule.setEntryText(entryText);
 		schedule.setClickable(true);
+		schedule.setButtonOnClick(this);
 		
 		// add schedule to layout
-		LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linearLayoutSchedules);
+		LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.linearLayoutSchedules);
 		linearLayout.addView(schedule);
 		
 		schedulesCount++;
 		id++;
     }
-    
+//    
     public void setTime(final View v)
     {
+    	FragmentManager ft = getFragmentManager();
+    	
+    	
+    	Toast.makeText(getActivity(), "inside", Toast.LENGTH_SHORT).show();
+    	
     	// send the id of the schedule entry field
     	Bundle bundle = new Bundle(1);
     	bundle.putInt("viewId", ((View)v.getParent().getParent()).getId());
     	
     	setTimeDialog = new SetTimeDialog();
 	    setTimeDialog.setArguments(bundle);
-    	setTimeDialog.show(fm, "setTimeD"); 
+    	setTimeDialog.show(ft, "setTimeD"); 
     }
     
     public void setDate() 
     {
     	// create dialog to set the date
-		DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, year, monthOfYear, dayOfMonth);
+		DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), dateSetListener, year, monthOfYear, dayOfMonth);
 		datePickerDialog.show();
     }
     
@@ -144,7 +188,7 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     
     public void saveSchedules(View v) throws IOException, JSONException
     {
-    	LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linearLayoutSchedules);
+    	LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.linearLayoutSchedules);
     	
     	// array to save data
     	JSONArray schedulesArray = new JSONArray();
@@ -170,17 +214,17 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     	String filename = String.valueOf(monthOfYear) + String.valueOf(dayOfMonth) + String.valueOf(year);
     	
 		FileOutputStream outputStream;
-		outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+		outputStream = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
 		outputStream.write(schedulesArray.toString().getBytes());
 		outputStream.close();
 	
-		Toast.makeText(this, filename, Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), filename, Toast.LENGTH_SHORT).show();
     }
     
     public void loadSchedules(View v) throws JSONException, IOException
     {
     	// remove all existing entries
-    	LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linearLayoutSchedules);
+    	LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.linearLayoutSchedules);
     	linearLayout.removeAllViews();
     	
     	StringBuffer fileContent = new StringBuffer("");
@@ -189,9 +233,9 @@ public class Schedules extends FragmentActivity implements OnClickListener {
 		
 		// set filename according to date
     	String filename = String.valueOf(monthOfYear) + String.valueOf(dayOfMonth) + String.valueOf(year);
-    	Toast.makeText(this, filename, Toast.LENGTH_SHORT).show();
+    	Toast.makeText(getActivity(), filename, Toast.LENGTH_SHORT).show();
 		
-		fileInputStream = openFileInput(filename);
+		fileInputStream = getActivity().openFileInput(filename);
 		
 		while ((ch = fileInputStream.read()) != -1)
 		{
@@ -220,7 +264,7 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     	this.minute1 = minute1;
     	this.minute2 = minute2;	
     }
-    
+   
     public void deleteSchedule(View v)
     {
     	// find parent entry field
@@ -228,15 +272,17 @@ public class Schedules extends FragmentActivity implements OnClickListener {
     	
     	// delete all views within entry field and delete entry field itself
 		scheduleEntryField.removeAllViews();
-		LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linearLayoutSchedules);
+		LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.linearLayoutSchedules);
 		linearLayout.removeView(scheduleEntryField);
 		
 		schedulesCount--;
     }
     
+
+    
     public void getId(View v)
     {
     	int entryId = ((View)(v.getParent().getParent())).getId();
-    	Toast.makeText(this, String.valueOf(entryId), Toast.LENGTH_SHORT).show();
+    	Toast.makeText(getActivity(), String.valueOf(entryId), Toast.LENGTH_SHORT).show();
     }
 }

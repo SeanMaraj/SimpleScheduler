@@ -21,7 +21,6 @@
         android:gravity="center_horizontal"
         android:text="Large Text"
         android:clickable="true"   
-        android:onClick="onClick"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ScrollView 
@@ -71,7 +70,7 @@
         android:layout_alignBaseline="@+id/txtDate"
         android:layout_alignBottom="@+id/txtDate"
         android:layout_alignParentRight="true"
-        android:onClick="saveSchedules"
+        android:onClick="onClick"
         android:text="Save" />
 
     <Button
@@ -82,7 +81,7 @@
         android:layout_alignBottom="@+id/btnSave"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/btnSave"
-        android:onClick="loadSchedules"
+        android:onClick="onClick"
         android:text="Load" />
 
 </RelativeLayout>

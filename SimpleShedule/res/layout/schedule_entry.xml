@@ -43,7 +43,6 @@
         android:layout_alignBottom="@+id/txtTime2"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:onClick="setTime"
         android:textSize="10dp"
         android:text="CHANGE" />
 
@@ -72,7 +71,6 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/txtTimeChange"
         android:textSize="10dp"
-        android:onClick="deleteSchedule"
         android:text="Delete" />
 
     <Button
@@ -85,7 +83,6 @@
         android:layout_toLeftOf="@+id/btnDelete"
         android:layout_toRightOf="@+id/txtTime2"
         android:textSize="10dp"
-        android:onClick="getId"
         android:text="GetID" />
 
 </RelativeLayout>

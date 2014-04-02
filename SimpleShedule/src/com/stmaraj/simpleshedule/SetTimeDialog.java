@@ -40,8 +40,8 @@ public class SetTimeDialog extends DialogFragment {
 
 								// get the id of the schedule field entry that was clicked
 								int scheduleEntryFieldId = getArguments().getInt("viewId");
-								Schedules schedulesActivity = (Schedules) getActivity();
-								ScheduleEntryField scheduleEntryField = (ScheduleEntryField) schedulesActivity.findViewById(scheduleEntryFieldId);
+								//Schedules schedulesActivity = (Schedules) getActivity();
+								ScheduleEntryField scheduleEntryField = (ScheduleEntryField) getActivity().findViewById(scheduleEntryFieldId);
 								
 								// display the chosen time in the schedule entry field
 								scheduleEntryField.setTime1(String.valueOf(hour1 + ":" + String.valueOf(min1)));
