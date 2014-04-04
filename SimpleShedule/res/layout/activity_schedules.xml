@@ -48,20 +48,16 @@
 		        android:layout_height="wrap_content"
 		        android:orientation="vertical" >
 		
-		    <com.stmaraj.simpleshedule.ScheduleEntryField
-		        android:id="@+id/firstSchedule"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_below="@id/View1" />
+			    <com.stmaraj.simpleshedule.ScheduleEntryField
+			        android:id="@+id/firstSchedule"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_below="@id/View1" />
 		    
 		    </LinearLayout>
-		    
         </RelativeLayout>
 	</ScrollView>
-
-    
-    
-
+	
     <Button
         android:id="@+id/btnSave"
         style="?android:attr/buttonStyleSmall"

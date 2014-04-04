@@ -34,6 +34,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 		
 		viewPager.setAdapter(mAdapter);
+		
+		// customize action bar
 		actionBar.setDisplayShowHomeEnabled(false);  
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -66,25 +68,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		});
 	}
 
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.main, menu);
-//		return true;
-//	}
-	
-	public void onClick(View v)
-	{
-		Intent intent = null;
-
-//		switch (v.getId())
-//		{
-//			case R.id.btnId:
-//				viewPager
-//				
-//		}
-	}
-
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
@@ -100,9 +83,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
-	
-	
 }
