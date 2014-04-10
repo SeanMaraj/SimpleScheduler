@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="16"
         android:targetSdkVersion="17" />
 
     <application
@@ -37,6 +37,10 @@
         <activity
             android:name="com.stmaraj.simpleshedule.Test"
             android:label="@string/title_activity_test" >
+        </activity>
+        <activity
+            android:name="com.stmaraj.simpleshedule.DisplayNotification"
+            android:label="@string/title_activity_display_notification" >
         </activity>
     </application>
 

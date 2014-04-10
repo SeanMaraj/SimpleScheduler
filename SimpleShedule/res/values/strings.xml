@@ -8,5 +8,6 @@
     <string name="title_activity_edit_to_do_list">EditToDoList</string>
     <string name="title_activity_schedules">Schedules</string>
     <string name="title_activity_test">Test</string>
+    <string name="title_activity_display_notification">DisplayNotification</string>
 
 </resources>

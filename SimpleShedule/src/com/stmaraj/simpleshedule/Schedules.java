@@ -4,6 +4,7 @@ package com.stmaraj.simpleshedule;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.json.JSONArray;
@@ -12,10 +13,16 @@ import org.json.JSONObject;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.os.Bundle;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,7 +44,6 @@ public class Schedules extends Fragment implements OnClickListener {
 	ScheduleEntryField firstSchedule;
 	Button btnAdd;
 	TextView txtDate;
-	TimePicker timePicker;
 	SetTimeDialog setTimeDialog;
 	Button btnSave, btnLoad;
 	
@@ -58,6 +64,14 @@ public class Schedules extends Fragment implements OnClickListener {
         btnSave.setOnClickListener(this);
         btnLoad.setOnClickListener(this);
 		txtDate.setOnClickListener(this);
+		
+		// set the date
+    	Calendar c = Calendar.getInstance();
+    	year = c.get(Calendar.YEAR);
+    	monthOfYear = c.get(Calendar.MONTH);
+    	dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+    	GregorianCalendar date = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+		txtDate.setText(DateFormat.format("MMMM dd,  yyyy", date));
 		
 		// set id of first schedule which has already been created so future schedules can stack
 		firstSchedule = (ScheduleEntryField)rootView.findViewById(R.id.firstSchedule);
@@ -86,8 +100,8 @@ public class Schedules extends Fragment implements OnClickListener {
 				case 100:
 					addScheduleField("00:00","00:00", "Empty");
 					break;
-				case R.id.btnId:
-					getId(v);
+				case R.id.btnAlarm:
+					setAlarm(v);
 					break;
 				case R.id.btnDelete:
 					deleteSchedule(v);
@@ -110,12 +124,43 @@ public class Schedules extends Fragment implements OnClickListener {
 				
 	}
 	
-    public void addScheduleField(String time1, String time2, String entryText)
+    public void displayNotification(View v) {
+    	NotificationCompat.Builder mBuilder =
+    	        new NotificationCompat.Builder(getActivity().getApplicationContext())
+    	        .setSmallIcon(R.drawable.ic_launcher)
+    	        .setContentTitle("My notification")
+    	        .setContentText("Hello World!");
+    	// Creates an explicit intent for an Activity in your app
+    	Intent resultIntent = new Intent(getActivity().getApplicationContext(), Test.class);
+
+    	// The stack builder object will contain an artificial back stack for the
+    	// started Activity.
+    	// This ensures that navigating backward from the Activity leads out of
+    	// your application to the Home screen.
+    	TaskStackBuilder stackBuilder = TaskStackBuilder.create(getActivity().getApplicationContext());
+    	// Adds the back stack for the Intent (but not the Intent itself)
+    	stackBuilder.addParentStack(Test.class);
+    	// Adds the Intent that starts the Activity to the top of the stack
+    	stackBuilder.addNextIntent(resultIntent);
+    	PendingIntent resultPendingIntent =
+    	        stackBuilder.getPendingIntent(
+    	            0,
+    	            PendingIntent.FLAG_UPDATE_CURRENT
+    	        );
+    	mBuilder.setContentIntent(resultPendingIntent);
+    	NotificationManager mNotificationManager =
+    	    (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+    	// mId allows you to update the notification later on.
+    	mNotificationManager.notify(201245, mBuilder.build());
+		
+	}
+
+	public void addScheduleField(String time1, String time2, String entryText)
     {
     	// create new schedule entry field
     	final ScheduleEntryField schedule = new ScheduleEntryField(getActivity());
     	schedule.setId(id);
-		schedule.setTime1(time1);
+		schedule.setTime1(time1, 0, 0);
 		schedule.setTime2(time2);
 		schedule.setEntryText(entryText);
 		schedule.setClickable(true);
@@ -199,6 +244,8 @@ public class Schedules extends Fragment implements OnClickListener {
 		outputStream = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
 		outputStream.write(schedulesArray.toString().getBytes());
 		outputStream.close();
+		
+		Toast.makeText(getActivity(), "Save Successfull", Toast.LENGTH_SHORT).show();
     }
     
     public void loadSchedules(View v) throws JSONException, IOException
@@ -248,11 +295,47 @@ public class Schedules extends Fragment implements OnClickListener {
 		linearLayout.removeView(scheduleEntryField);
     }
     
-
-    
     public void getId(View v)
     {
     	int entryId = ((View)(v.getParent().getParent())).getId();
     	Toast.makeText(getActivity(), String.valueOf(entryId), Toast.LENGTH_SHORT).show();
+    }
+    
+    public void setAlarm(View v)
+    {
+    	// get the schedule entry 
+    	ScheduleEntryField scheduleEntryField = (ScheduleEntryField)v.getParent().getParent();
+    	
+    	// create the alarm
+    	AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(getActivity().ALARM_SERVICE);
+    	
+    	// get the time for when the alarm will go off
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.set(Calendar.YEAR, year);
+    	calendar.set(Calendar.MONTH, monthOfYear);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);                 
+		calendar.set(Calendar.HOUR_OF_DAY, scheduleEntryField.getAlarmHour());
+        calendar.set(Calendar.MINUTE, scheduleEntryField.getAlarmMinute());
+        calendar.set(Calendar.SECOND, 0);
+        
+        // intent to be launched when alarm triggers
+        Intent intent = new Intent(getActivity().getApplicationContext(), DisplayNotification.class);
+        intent.putExtra("NotifyID", 1);
+    	
+        // PendingIntent to launch activity when the alarm triggers-
+        PendingIntent displayIntent = PendingIntent.getActivity(
+            getActivity().getApplicationContext(), 0, 
+            intent, 0);
+    	
+        // set alarm
+    	alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), displayIntent);
+    	
+    	Toast.makeText(getActivity(), String.valueOf("Alarm Set For " + calendar.getTime().toString()), Toast.LENGTH_LONG).show();
+    }
+    
+    public void testMethod(View view)
+    {
+    	Intent intent = new Intent(getActivity().getApplicationContext(), DisplayNotification.class);
+    	startActivity(intent);
     }
 }

@@ -1,5 +1,6 @@
 package com.stmaraj.simpleshedule;
 
+import android.R.integer;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -17,6 +18,9 @@ public class ScheduleEntryField extends LinearLayout{
 	private Button btnId;
 	private Button btnDelete;
 	private Button btnChangeTime;
+	
+	private int alarmHour;
+	private int alarmMinute;
 
 	public ScheduleEntryField(Context context) {
 		super(context);
@@ -42,16 +46,16 @@ public class ScheduleEntryField extends LinearLayout{
     	time1 = (TextView)findViewById(R.id.txtTime1);
     	time2 = (TextView)findViewById(R.id.txtTime2);
     	entryText = (EditText)findViewById(R.id.edtEntry);
-    	btnId = (Button)findViewById(R.id.btnId);
+    	btnId = (Button)findViewById(R.id.btnAlarm);
     	btnDelete = (Button)findViewById(R.id.btnDelete);
     	btnChangeTime = (Button)findViewById(R.id.txtTimeChange);
-    	
-    	
     }
 	
-	public void setTime1(String text)
+	public void setTime1(String text, int hour, int minute)
     {
     	time1.setText(text);
+    	alarmHour = hour;
+    	alarmMinute = minute;
     }
     
 	public void setTime2(String text)
@@ -78,6 +82,16 @@ public class ScheduleEntryField extends LinearLayout{
     {
     	return entryText.getText().toString();
 		
+	}
+	
+	public int getAlarmHour()
+	{
+		return alarmHour;
+	}
+	
+	public int getAlarmMinute()
+	{
+		return alarmMinute;
 	}
 
 	public void setButtonOnClick(OnClickListener l)
