@@ -2,6 +2,7 @@ package com.stmaraj.simpleshedule;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.view.Menu;
 import android.view.View;
 

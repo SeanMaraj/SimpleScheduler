@@ -7,6 +7,8 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="17" />
+    
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -42,6 +44,12 @@
             android:name="com.stmaraj.simpleshedule.DisplayNotification"
             android:label="@string/title_activity_display_notification" >
         </activity>
+        
+        <service android:name=".MyAlarmService"
+                 android:enabled="true" />
+         
+        <receiver android:name=".MyReceiver"/>
+        
     </application>
 
 </manifest>

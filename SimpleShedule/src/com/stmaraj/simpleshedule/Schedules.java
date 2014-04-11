@@ -73,10 +73,12 @@ public class Schedules extends Fragment implements OnClickListener {
     	GregorianCalendar date = new GregorianCalendar(year, monthOfYear, dayOfMonth);
 		txtDate.setText(DateFormat.format("MMMM dd,  yyyy", date));
 		
-		// set id of first schedule which has already been created so future schedules can stack
-		firstSchedule = (ScheduleEntryField)rootView.findViewById(R.id.firstSchedule);
-		firstSchedule.setId(1000);
-		firstSchedule.setButtonOnClick(this);
+		// load schedule for current day
+		try {
+			loadSchedules(rootView);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		// create add button and place below first schedule
 		btnAdd = new Button(getActivity());
@@ -98,7 +100,7 @@ public class Schedules extends Fragment implements OnClickListener {
 			switch( v.getId() )
 			{
 				case 100:
-					addScheduleField("00:00","00:00", "Empty");
+					addScheduleField("00:00","00:00", "Empty", null);
 					break;
 				case R.id.btnAlarm:
 					setAlarm(v);
@@ -113,7 +115,7 @@ public class Schedules extends Fragment implements OnClickListener {
 					saveSchedules(v);
 					break;
 				case R.id.btnLoad:
-					loadSchedules(v);
+					loadSchedules(null);
 					break;
 				case R.id.txtDate:
 					setDate();
@@ -155,7 +157,7 @@ public class Schedules extends Fragment implements OnClickListener {
 		
 	}
 
-	public void addScheduleField(String time1, String time2, String entryText)
+	public void addScheduleField(String time1, String time2, String entryText, View rootView)
     {
     	// create new schedule entry field
     	final ScheduleEntryField schedule = new ScheduleEntryField(getActivity());
@@ -167,8 +169,14 @@ public class Schedules extends Fragment implements OnClickListener {
 		schedule.setButtonOnClick(this);
 		
 		// add schedule to layout
-		LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.linearLayoutSchedules);
-		linearLayout.addView(schedule);
+		if (rootView == null){
+			LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.linearLayoutSchedules);
+			linearLayout.addView(schedule);
+		}else{
+			LinearLayout linearLayout = (LinearLayout)rootView.findViewById(R.id.linearLayoutSchedules);
+			linearLayout.addView(schedule);
+		}
+		
 		
 		// increment id to ensure each entry has a different id
 		id++;
@@ -207,6 +215,12 @@ public class Schedules extends Fragment implements OnClickListener {
 			
 			GregorianCalendar date = new GregorianCalendar(year, monthOfYear, dayOfMonth);
 			txtDate.setText(DateFormat.format("MMMM dd,  yyyy", date));
+			
+			try {
+				loadSchedules(null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
     };
     
@@ -238,7 +252,7 @@ public class Schedules extends Fragment implements OnClickListener {
     	
     	// create dynamic filename according to date
     	String filename = String.valueOf(monthOfYear) + String.valueOf(dayOfMonth) + String.valueOf(year);
-    	
+
     	// write JSON data file to internal storage
 		FileOutputStream outputStream;
 		outputStream = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
@@ -248,11 +262,17 @@ public class Schedules extends Fragment implements OnClickListener {
 		Toast.makeText(getActivity(), "Save Successfull", Toast.LENGTH_SHORT).show();
     }
     
-    public void loadSchedules(View v) throws JSONException, IOException
+    public void loadSchedules(View rootView) throws JSONException, IOException
     {
     	// remove all existing entries
-    	LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.linearLayoutSchedules);
-    	linearLayout.removeAllViews();
+    	if (rootView == null)
+    	{
+	    	LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.linearLayoutSchedules);
+	    	linearLayout.removeAllViews();
+    	}else {
+    		LinearLayout linearLayout = (LinearLayout)rootView.findViewById(R.id.linearLayoutSchedules);
+	    	linearLayout.removeAllViews();
+		}
     	
     	StringBuffer fileContent = new StringBuffer("");
     	FileInputStream fileInputStream;
@@ -280,7 +300,11 @@ public class Schedules extends Fragment implements OnClickListener {
     		String time2 = String.valueOf(scheduleJSON.get("time2"));
     		String entryText = String.valueOf(scheduleJSON.get("entryText"));
     		
-    		addScheduleField(time1, time2, entryText);
+    		if (rootView == null)
+    			addScheduleField(time1, time2, entryText, null);
+    		else {
+    			addScheduleField(time1, time2, entryText, rootView);
+			}
     	}
     }
    
@@ -305,9 +329,7 @@ public class Schedules extends Fragment implements OnClickListener {
     {
     	// get the schedule entry 
     	ScheduleEntryField scheduleEntryField = (ScheduleEntryField)v.getParent().getParent();
-    	
-    	// create the alarm
-    	AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(getActivity().ALARM_SERVICE);
+    	String content = scheduleEntryField.getEntryText();
     	
     	// get the time for when the alarm will go off
     	Calendar calendar = Calendar.getInstance();
@@ -319,16 +341,15 @@ public class Schedules extends Fragment implements OnClickListener {
         calendar.set(Calendar.SECOND, 0);
         
         // intent to be launched when alarm triggers
-        Intent intent = new Intent(getActivity().getApplicationContext(), DisplayNotification.class);
-        intent.putExtra("NotifyID", 1);
+        Intent intent = new Intent(getActivity().getApplicationContext(), MyReceiver.class);
+        intent.putExtra("content", content);
     	
         // PendingIntent to launch activity when the alarm triggers-
-        PendingIntent displayIntent = PendingIntent.getActivity(
-            getActivity().getApplicationContext(), 0, 
-            intent, 0);
-    	
-        // set alarm
-    	alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), displayIntent);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), 0, intent, 0);
+        
+        // create the alarm
+    	AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(getActivity().ALARM_SERVICE);
+    	alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     	
     	Toast.makeText(getActivity(), String.valueOf("Alarm Set For " + calendar.getTime().toString()), Toast.LENGTH_LONG).show();
     }
