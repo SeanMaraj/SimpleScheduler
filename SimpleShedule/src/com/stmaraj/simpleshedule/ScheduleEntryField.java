@@ -1,6 +1,5 @@
 package com.stmaraj.simpleshedule;
 
-import android.R.integer;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -8,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ScheduleEntryField extends LinearLayout{
@@ -15,8 +15,7 @@ public class ScheduleEntryField extends LinearLayout{
 	private TextView time1;
 	private TextView time2;
 	private EditText entryText;
-	private Button btnId;
-	private Button btnDelete;
+	private Button btnOptions;
 	private Button btnChangeTime;
 	
 	private int alarmHour;
@@ -31,7 +30,7 @@ public class ScheduleEntryField extends LinearLayout{
 		loadViews();
 	}
  
-	// called when loading up activity. One field is loaded by default
+	// called when loading up activity. One field is loaded in this app
 	public ScheduleEntryField(Context context, AttributeSet attrs) {
         super(context, attrs);
  
@@ -46,9 +45,8 @@ public class ScheduleEntryField extends LinearLayout{
     	time1 = (TextView)findViewById(R.id.txtTime1);
     	time2 = (TextView)findViewById(R.id.txtTime2);
     	entryText = (EditText)findViewById(R.id.edtEntry);
-    	btnId = (Button)findViewById(R.id.btnAlarm);
-    	btnDelete = (Button)findViewById(R.id.btnDelete);
     	btnChangeTime = (Button)findViewById(R.id.txtTimeChange);
+    	btnOptions = (Button)findViewById(R.id.btnOptions);
     }
 	
 	public void setTime1(String text, int hour, int minute)
@@ -96,8 +94,7 @@ public class ScheduleEntryField extends LinearLayout{
 
 	public void setButtonOnClick(OnClickListener l)
 	{
-		btnId.setOnClickListener(l);
-		btnDelete.setOnClickListener(l);
+		btnOptions.setOnClickListener(l);
 		btnChangeTime.setOnClickListener(l);
 	}
 	

@@ -13,17 +13,19 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="00:00"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/txtTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="3dp"
         android:layout_toRightOf="@+id/txtTime1"
         android:text="to"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/txtTime2"
@@ -33,7 +35,8 @@
         android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/txtTo"
         android:text="00:00"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/txtTimeChange"
@@ -41,8 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/txtTime2"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/txtTime2"
         android:textSize="10dp"
         android:text="CHANGE" />
 
@@ -50,7 +53,8 @@
         android:id="@+id/edtEntry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtTo">
+        android:layout_below="@+id/txtTo"
+        android:textSize="30sp" >
 
         <requestFocus android:layout_width="match_parent" />
 
@@ -62,27 +66,16 @@
         android:layout_below="@+id/edtEntry"
         android:background="#868686" />
 
-    <Button
-        android:id="@+id/btnDelete"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/txtTimeChange"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/txtTimeChange"
-        android:textSize="10dp"
-        android:text="Delete" />
 
     <Button
-        android:id="@+id/btnAlarm"
+        android:id="@+id/btnOptions"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnDelete"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/btnDelete"
-        android:layout_toRightOf="@+id/txtTime2"
+        android:layout_alignBottom="@+id/txtTime2"
+        android:layout_alignParentRight="true"
         android:textSize="10dp"
-        android:text="GetID" />
+        android:text="OPTIONS" />
 
 </RelativeLayout>

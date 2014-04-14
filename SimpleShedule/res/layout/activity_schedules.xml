@@ -12,16 +12,17 @@
 
     <TextView
         android:id="@+id/txtDate"
-        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
         android:gravity="center_horizontal"
         android:text="Large Text"
-        android:clickable="true"   
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
 
     <ScrollView 
         android:id="@+id/scrollView"
@@ -63,21 +64,10 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/txtDate"
         android:layout_alignBottom="@+id/txtDate"
         android:layout_alignParentRight="true"
         android:onClick="onClick"
-        android:text="Save" />
-
-    <Button
-        android:id="@+id/btnLoad"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnSave"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/btnSave"
-        android:onClick="onClick"
-        android:text="Load" />
+        android:text="SAVE"
+        android:textSize="15sp" />
 
 </RelativeLayout>

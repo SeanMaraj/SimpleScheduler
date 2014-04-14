@@ -18,10 +18,12 @@ import android.os.Bundle;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.Gravity;
@@ -45,7 +47,7 @@ public class Schedules extends Fragment implements OnClickListener {
 	Button btnAdd;
 	TextView txtDate;
 	SetTimeDialog setTimeDialog;
-	Button btnSave, btnLoad;
+	Button btnSave;
 	
 	int id = 1001;
 	int dayOfMonth = 0, monthOfYear = 0, year = 0;
@@ -59,10 +61,8 @@ public class Schedules extends Fragment implements OnClickListener {
 
         // set on click listener for save, load, and date buttons
         btnSave = (Button)rootView.findViewById(R.id.btnSave);
-        btnLoad = (Button)rootView.findViewById(R.id.btnLoad);
         txtDate = (TextView)rootView.findViewById(R.id.txtDate);
         btnSave.setOnClickListener(this);
-        btnLoad.setOnClickListener(this);
 		txtDate.setOnClickListener(this);
 		
 		// set the date
@@ -84,9 +84,11 @@ public class Schedules extends Fragment implements OnClickListener {
 		btnAdd = new Button(getActivity());
 		btnAdd.setId(100);
 		btnAdd.setOnClickListener(this);
-		btnAdd.setGravity(Gravity.CENTER);
+		btnAdd.setText("+");
+		btnAdd.setTextSize(15);
 		RelativeLayout.LayoutParams btnAddParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		btnAddParams.addRule(RelativeLayout.BELOW, R.id.linearLayoutSchedules);
+		btnAddParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		relativeLayout = (RelativeLayout)rootView.findViewById(R.id.RelativeLayoutSchedules2);
 		relativeLayout.addView(btnAdd, btnAddParams);
 		
@@ -102,20 +104,14 @@ public class Schedules extends Fragment implements OnClickListener {
 				case 100:
 					addScheduleField("00:00","00:00", "Empty", null);
 					break;
-				case R.id.btnAlarm:
-					setAlarm(v);
-					break;
-				case R.id.btnDelete:
-					deleteSchedule(v);
+				case R.id.btnOptions:
+					showOptions(v);
 					break;
 				case R.id.txtTimeChange:
 					setTime(v);
 					break;
 				case R.id.btnSave:
 					saveSchedules(v);
-					break;
-				case R.id.btnLoad:
-					loadSchedules(null);
 					break;
 				case R.id.txtDate:
 					setDate();
@@ -126,7 +122,32 @@ public class Schedules extends Fragment implements OnClickListener {
 				
 	}
 	
-    public void displayNotification(View v) {
+    private void showOptions(final View v) {
+		
+		String[] items = {"Set Alarm", "Delete"};
+		
+	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	    builder.setTitle("Schedule Entry Options")
+	           .setItems(items, new DialogInterface.OnClickListener() {
+	               public void onClick(DialogInterface dialog, int which) {
+	               
+	            	   switch (which) {
+					case 0:
+						setAlarm(v);
+						break;
+					case 1:
+						deleteSchedule(v);
+					default:
+						break;
+					}
+	           }
+	    });
+	    
+	    AlertDialog alert = builder.create();
+        alert.show();
+	}
+
+	public void displayNotification(View v) {
     	NotificationCompat.Builder mBuilder =
     	        new NotificationCompat.Builder(getActivity().getApplicationContext())
     	        .setSmallIcon(R.drawable.ic_launcher)
@@ -161,12 +182,14 @@ public class Schedules extends Fragment implements OnClickListener {
     {
     	// create new schedule entry field
     	final ScheduleEntryField schedule = new ScheduleEntryField(getActivity());
+    	
     	schedule.setId(id);
 		schedule.setTime1(time1, 0, 0);
 		schedule.setTime2(time2);
 		schedule.setEntryText(entryText);
 		schedule.setClickable(true);
 		schedule.setButtonOnClick(this);
+		
 		
 		// add schedule to layout
 		if (rootView == null){
