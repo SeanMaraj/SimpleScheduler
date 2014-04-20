@@ -1,94 +1,101 @@
 package com.stmaraj.simpleshedule;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ListView;
 
-public class ToDo extends Fragment {
+public class ToDo extends Fragment implements OnClickListener {
 
-	//TextView lblItem1;
+	EditText entryField;
+	List<ToDoListItem> list;
+    MyAdapter adapter;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
  
         View rootView = inflater.inflate(R.layout.activity_todo, container, false);
+        
+        // set onclicklistener for add button
+        Button btnAddItem = (Button)rootView.findViewById(R.id.btnAddItem);
+        btnAddItem.setOnClickListener(this);
+
+        // get the edit text where user enters text
+        entryField = (EditText)rootView.findViewById(R.id.entryField);
+        
+        // instantiate the list
+        list = new ArrayList<ToDoListItem>();
+        
+        // create the adaptor to manage the list
+        adapter = new MyAdapter(getActivity().getApplicationContext(), R.layout.list_item, list);
+        
+        // set the adaptor to the list view
+        ListView itemList = (ListView)rootView.findViewById(R.id.itemList);
+        itemList.setAdapter(adapter);
          
         return rootView;
     }
 	
-//	@Override
-//	protected void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_todo);
-//		
-//		lblItem1 = (TextView) findViewById(R.id.lblItem1);
-//		
-//		loadList();
-//	}
-//
-//	private void loadList()
-//	{
-//		String filename = "Item1";
-//		StringBuffer fileContent = new StringBuffer("");
-//		int ch;
-//		
-//		FileInputStream fileInputStream;
-//
-//		try
-//		{
-//			fileInputStream = openFileInput(filename);
-//			
-//			while ((ch = fileInputStream.read()) != -1)
-//			{
-//				fileContent.append((char)ch); 
-//			}
-//			
-//			lblItem1.setText(new String(fileContent));
-//		}
-//		catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//			lblItem1.setText("File Not Found");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//			
-//		
-//		
-//	}
-//
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.to_do, menu);
-//		return true;
-//	}
-//	
-//	public void onClick(View v)
-//	{
-//		Intent intent = new Intent(this, EditToDoList.class);
-//		startActivityForResult(intent, 1);
-//	}
-//	
-//	@Override
-//	protected void onResume() {
-//		// TODO Auto-generated method stub
-//		super.onResume();
-//		loadList();
-//	}
-	
-	/*@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		super.onActivityResult(requestCode, resultCode, data);
+	private class MyAdapter extends ArrayAdapter<ToDoListItem>
+	{
+		Context context; 
+	    int layoutResourceId;    
+	    List<ToDoListItem> data = new ArrayList<ToDoListItem>();
+	    
+	    public MyAdapter(Context context, int layoutResourceId, List<ToDoListItem> data) {
+	        super(context, layoutResourceId, data);
+	        this.layoutResourceId = layoutResourceId;
+	        this.context = context;
+	        this.data = data;
+	    }
+	    
+	    // gets the modified adaptor view which is my custom list item view
+	    @Override
+	    public View getView(int position, View convertView, ViewGroup parent) {
+	    	
+	    	// get the custom view
+    		LayoutInflater inflater = (getActivity()).getLayoutInflater();
+	        View row = inflater.inflate(layoutResourceId, parent, false);
+	        
+	        // set the checkbock according to user data
+	        CheckBox checkBox = (CheckBox)row.findViewById(R.id.checkBox);
+	        checkBox.setChecked(data.get(position).getChecked());
+	        checkBox.setText(data.get(position).getText());
+	        
+	    	return row;	    	
+	    }	
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		switch (v.getId()) {
+		case R.id.btnAddItem:
+			addItem();
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void addItem() {
+		// create new item using user data
+		ToDoListItem item = new ToDoListItem(false, entryField.getText().toString());
 		
-		loadList();
-	}*/
+		// add item to list
+		adapter.add(item);
+        adapter.notifyDataSetChanged();	
+	}
 }

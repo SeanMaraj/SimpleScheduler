@@ -303,7 +303,6 @@ public class Schedules extends Fragment implements OnClickListener {
 		
 		// set filename according to date
     	String filename = String.valueOf(monthOfYear) + String.valueOf(dayOfMonth) + String.valueOf(year);
-    	Toast.makeText(getActivity(), filename, Toast.LENGTH_SHORT).show();
 		
 		fileInputStream = getActivity().openFileInput(filename);
 		
