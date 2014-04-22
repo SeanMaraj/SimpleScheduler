@@ -47,6 +47,8 @@ public class ScheduleEntryField extends LinearLayout{
     	entryText = (EditText)findViewById(R.id.edtEntry);
     	btnChangeTime = (Button)findViewById(R.id.txtTimeChange);
     	btnOptions = (Button)findViewById(R.id.btnOptions);
+    	
+    	entryText.setHint("Enter text");
     }
 	
 	public void setTime1(String text, int hour, int minute)

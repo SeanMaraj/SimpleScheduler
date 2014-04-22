@@ -26,13 +26,14 @@
 
             <requestFocus />
         </EditText>
-
+        
         <Button
             android:id="@+id/btnAddItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="19dp"
             android:text="ADD" />
+         
     </LinearLayout>
 
     <ListView
@@ -42,5 +43,4 @@
         android:layout_alignLeft="@+id/listAddLinearLayout"
         android:layout_below="@+id/listAddLinearLayout" >
     </ListView>
-
 </RelativeLayout>

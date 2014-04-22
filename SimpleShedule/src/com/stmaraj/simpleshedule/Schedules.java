@@ -102,7 +102,7 @@ public class Schedules extends Fragment implements OnClickListener {
 			switch( v.getId() )
 			{
 				case 100:
-					addScheduleField("00:00","00:00", "Empty", null);
+					addScheduleField("00:00","00:00", "", null);
 					break;
 				case R.id.btnOptions:
 					showOptions(v);

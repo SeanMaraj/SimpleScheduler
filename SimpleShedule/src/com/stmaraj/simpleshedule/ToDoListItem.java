@@ -17,4 +17,12 @@ public class ToDoListItem {
 	public String getText() {
 		return text;
 	}
+	
+	public void setText(String text){
+		this.text = text;
+	}
+	
+	public void setChecked(boolean value) {
+		this.checked=value;
+	}
 }
